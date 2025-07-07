@@ -66,6 +66,16 @@ export default function ContainerManager() {
     }
   };
 
+ const restartContainer = async (containerId) => {
+  try {
+    await axios.post('http://localhost:5000/restart', { containerId });
+    alert('Container restarted');
+    fetchContainers(); // Refresh container list
+  } catch (error) {
+    console.error('Error restarting container:', error);
+  }
+};
+
   useEffect(() => {
     fetchImages();
     fetchContainers();
@@ -135,6 +145,7 @@ export default function ContainerManager() {
                 <td>
                   <button onClick={() => startContainer(container.Id)}>Start</button>
                   <button onClick={() => stopContainer(container.Id)}>Stop</button>
+                  <button onClick={() => restartContainer(container.Id)}>Restart</button>
                 </td>
               </tr>
             ))}
