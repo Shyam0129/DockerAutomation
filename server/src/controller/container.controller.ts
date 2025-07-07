@@ -171,14 +171,18 @@ export const containerStop = (async (req: Request, res: Response) => {
 }) as RequestHandler;
 
 // ...existing code...
-export const restartContainer = async (req: Request, res: Response) => {
+export const restartContainer = (async (req: Request, res: Response) => {
   try {
     const { containerId } = req.body;
+    if (!containerId) {
+      return res.status(Status.BAD_REQUEST).json({ error: "Container ID is required" });
+    }
     const container = docker.getContainer(containerId);
     await container.restart();
-    res.status(200).json({ message: "Container restarted successfully" });
+    res.status(Status.OK).json({ message: "Container restarted successfully" });
   } catch (error) {
-    res.status(500).json({ message: "Failed to restart container", error });
+    res.status(Status.INTERNAL_SERVER_ERROR).json({ message: "Failed to restart container", error });
   }
-};
+}) as RequestHandler;
+
 // ...existing code...
