@@ -6,6 +6,7 @@ import { Routes, Route } from 'react-router-dom';
 import Images from './components/Images';
 import Container from './components/Container';
 import Authentication from './components/Authentication';
+import About from './components/About';
 
 export default function App() {
   return (
@@ -17,6 +18,7 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route path="/images" element={<Images />} />
         <Route path="/container" element={<Container />} />
+        <Route path="/about" element={<About />} />
       </Routes>
     </div>
   );
