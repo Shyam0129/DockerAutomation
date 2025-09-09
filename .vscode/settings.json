@@ -1,1 +1,9 @@
-{}
+{
+    "docker.enableCommandSelection": true,
+    "docker.containers.sortBy": "Name",
+    "docker.containers.groupBy": "ContainerName",
+    "python.analysis.extraPaths": [
+        "./mcp-server",
+        "./mcp-tools"
+    ]
+}

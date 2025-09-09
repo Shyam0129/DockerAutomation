@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  mcp-server:
+    container_name: mcp-server
+    build:
+      context: ./mcp-server
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./common:/app/common
+    networks:
+      - mcp-network
+    environment:
+      - ENVIRONMENT=production
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  archestra:
+    container_name: archestra
+    build:
+      context: ./archestra
+    ports:
+      - "8081:8081"
+    volumes:
+      - ./common:/app/common
+    depends_on:
+      - mcp-server
+    networks:
+      - mcp-network
+    environment:
+      - ENVIRONMENT=production
+      - MCP_SERVER_URL=http://mcp-server:8080
+
+  mcp-tools:
+    container_name: mcp-tools
+    build:
+      context: ./mcp-tools
+    ports:
+      - "8082:8082"
+    volumes:
+      - ./common:/app/common
+    depends_on:
+      - mcp-server
+    networks:
+      - mcp-network
+    environment:
+      - ENVIRONMENT=production
+      - MCP_SERVER_URL=http://mcp-server:8080
+
+networks:
+  mcp-network:
+    name: mcp-network
+    driver: bridge
